@@ -207,4 +207,12 @@ body{
 	top:0;
 	right:0;
 }
+.farespan{
+	background-color: white; 
+	position: relative; 
+	top:-1px; 
+	margin: 0 auto;
+	display: block;
+	text-align: center;
+}
 
