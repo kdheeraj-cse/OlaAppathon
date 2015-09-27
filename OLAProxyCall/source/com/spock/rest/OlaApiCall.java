@@ -130,7 +130,7 @@ public class OlaApiCall {
 					}
 			}
 			}
-			if(cabCountSedan!=0){
+			if(cabCountSedan!=0 && cabCountMini!=0){
 				responseString.append(",");
 			}
 			for (int i = 0; i < cabCountSedan; i++) {

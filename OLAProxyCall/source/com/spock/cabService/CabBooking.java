@@ -4,7 +4,7 @@ import com.spock.cabBooking.MiniBooking;
 
 public class CabBooking {
 
-	private String []_crn = {"1488","1489","1490"};
+	private String []_crn = {"1488","1488","1488"};
 	private String []_driver_name = {"Chonenix D248","Chonenix D249","Chonenix D250"};
 	private String []_driver_number = {"2567894248","2567894249","2567894250"};
 	private String []_cab_number = {"KA 14  8","KA 14  9","KA 14  10"};

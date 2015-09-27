@@ -21,6 +21,7 @@ $(document).ready(function(){
 	});
 	$('#checkstatus').on('click',function(){
 		if(booking_done){
+			$('.trackmapcontainer').removeClass('hide');
 			$('.appcontainer').addClass('hide');
 			populate_trackMap();
 		//Add function for tracking multiple cabs
@@ -38,6 +39,10 @@ $(document).ready(function(){
 			$('#cab-selection').addClass('hide');
 			$('#ride-option').addClass('hide');
 		}
+	});
+	$('#back').on('click',function(){
+		$('.trackmapcontainer').addClass('hide');
+		$('.appcontainer').removeClass('hide');
 	});
 })
 
@@ -155,25 +160,24 @@ function rideAvailCallback(data){
 }
 
 function getAllCabsAvailability(data){
-	for(var i=0,j=0;i<data.categories.length && j<data.categories.length;){
-		if(data.categories[i].id==="mini"){
+	for(var i=0,j=0,k=0;k<data.categories.length;k++){
+		if(data.categories[k].id==="mini"){
 			if(!cabminidetails[i]){
 				cabminidetails[i]={};
 			}
-			cabminidetails[i].id=data.categories[i].id;
-			cabminidetails[i].eta=data.categories[i].eta;
-			cabminidetails[i].time_unit=data.categories[i].time_unit;
-			cabminidetails[i].fare_breakup=data.categories[i].fare_breakup;
+			cabminidetails[i].id=data.categories[k].id;
+			cabminidetails[i].eta=data.categories[k].eta;
+			cabminidetails[i].time_unit=data.categories[k].time_unit;
+			cabminidetails[i].fare_breakup=data.categories[k].fare_breakup;
 			i++;
-		}else if(data.categories[i].id==="sedan"){
+		}else if(data.categories[k].id==="sedan"){
 			if(!cabsedandetails[j]){
 				cabsedandetails[j]={};
 			}
-			cabsedandetails[j].id=data.categories[i].id;
-			cabsedandetails[j].eta=data.categories[i].eta;
-			cabsedandetails[j].time_unit=data.categories[i].time_unit;
-			cabsedandetails[j].fare_breakup=data.categories[i].fare_breakup;
-			i++;
+			cabsedandetails[j].id=data.categories[k].id;
+			cabsedandetails[j].eta=data.categories[k].eta;
+			cabsedandetails[j].time_unit=data.categories[k].time_unit;
+			cabsedandetails[j].fare_breakup=data.categories[k].fare_breakup;
 			j++;
 		}
 	}
@@ -207,28 +211,43 @@ function objectSize(the_object) {
 
 var markerLocation = [
 	['Current_loc', 12.950536999999999, 77.64210109999999, 1],
-	['MurugeshPalya', 12.9562593, 77.6534629, 2],
-	['HAL', 12.9705598, 77.650033, 3]
+	['MurugeshPalya', 12.9562593, 77.6534629, 2, 'Your cab'],
+	['HAL', 12.9705598, 77.650033, 3, 'Cab 1'],
+	['Domlur',12.9609857,77.6387316,4, 'Cab 2'],
+	['Indiranagar',12.9718915,77.6411545,5, 'Cab 3'],
+	['Challaghatta',12.9505711,77.64451679999999,6, 'Cab 4']
 ];
 
 function populate_trackMap() {
 			var mapCanvas = document.getElementById('trackmap');
+			var image = 'resources/taxi.png';
+			var _center = new google.maps.LatLng(markerLocation[0][1],markerLocation[0][2]);
 	        var mapOptions = {
-	          center: new google.maps.LatLng(markerLocation[0][1],markerLocation[0][2]),
-	          zoom: 10,
+	          center: _center,
+	          zoom: 12,
 	          mapTypeId: google.maps.MapTypeId.ROADMAP
 	        }
 	        var map = new google.maps.Map(mapCanvas, mapOptions);
-	        for(var i=0;i<markerLocation.length;i++){
+	        //myCenter=new google.maps.LatLng(markerLocation[i][1],markerLocation[i][2]);
+	        var marker=new google.maps.Marker({
+	        	  position:_center,
+	        	  });
+	       // marker.setMap(map);
+	        for(var i=1;i<=mini+sedan;i++){
 	        	myCenter=new google.maps.LatLng(markerLocation[i][1],markerLocation[i][2]);
 		        var marker=new google.maps.Marker({
 		        	  position:myCenter,
+		        	  icon:image
 		        	  });
 		        marker.setMap(map);
+		        var infowindow = new google.maps.InfoWindow({
+		        	  content:markerLocation[i][4]
+		        	  });
+
+		        	infowindow.open(map,marker);
+		        	}
 	        }
 	       // getRideAvailability(lattitude,longitude);
-}
-
 
 
 
